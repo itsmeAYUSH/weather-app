@@ -7,9 +7,16 @@ let weather = {
       + "&units=metric&appid="
       + this.apikey
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          alert("No weather found.");
+          throw new Error("No weather found.");
+        }
+        return response.json();
+      })
       .then((data) => this.displayWeather(data));
   },
+
   displayWeather: function (data) {
     const { name } = data;
     const { icon, description } = data.weather[0];
@@ -43,11 +50,3 @@ document.querySelector(".search-bar").addEventListener("keyup", function (event)
   }
 });
 weather.fetchWeather("Mumbai");
-
-
-
-
-
-
-
-
